@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Careers | Cactus Films</title>
+    <link rel="icon" type="image/png" href="https://cdn.prod.website-files.com/674396c59212c6ea348b24e0/6781777e8090217672660a47_cactus%20films%20logo%20(1).png">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.cdnfonts.com/css/cabinet-grotesk');
+
+        body {
+            font-family: 'Cabinet Grotesk', sans-serif;
+            background-color: black;
+            color: white;
+        }
+
+        .job-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(8px);
+            transition: all 0.3s ease;
+        }
+
+        .job-card:hover {
+            background: rgba(255, 255, 255, 0.05);
+            transform: translateY(-2px);
+        }
+
+        .btn-apply {
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(8px);
+            transition: all 0.3s ease;
+        }
+
+        .btn-apply:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .gradient-bg {
+            background: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 100%);
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero Section with Background -->
+    <div class="relative h-96 overflow-hidden">
+        <img src="/api/placeholder/1920/1080" alt="AI Film Studio" class="object-cover w-full h-full">
+        <div class="absolute inset-0 gradient-bg"></div>
+        <div class="absolute inset-0 flex items-center justify-center text-center">
+            <div>
+                <img src="https://cdn.prod.website-files.com/674396c59212c6ea348b24e0/67817175a2308347eb144625_cactus%20films%20logo.png" alt="Cactus Films" class="h-16 mx-auto mb-6">
+                <h1 class="text-4xl md:text-6xl font-bold mb-4">Join Our Team</h1>
+                <p class="text-xl md:text-2xl opacity-80">Shape the future of AI-powered filmmaking</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Job Listings Section -->
+    <div class="max-w-6xl mx-auto px-4 py-16">
+        <div class="grid gap-6">
+            <!-- AI Film Director -->
+            <div class="job-card p-6 rounded-lg flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+                <div>
+                    <h3 class="text-xl font-bold mb-2">AI Film Director</h3>
+                    <p class="text-gray-400 mb-2">Los Angeles, CA (Hybrid)</p>
+                    <p class="text-gray-400 mb-2">$180,000 - $250,000</p>
+                    <p class="opacity-70">Lead AI-driven film projects and oversee the integration of AI technologies in film production.</p>
+                </div>
+                <button class="btn-apply px-6 py-2 rounded-full text-white">Apply Now</button>
+            </div>
+
+            <!-- ML Engineer, Computer Vision -->
+            <div class="job-card p-6 rounded-lg flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+                <div>
+                    <h3 class="text-xl font-bold mb-2">ML Engineer, Computer Vision</h3>
+                    <p class="text-gray-400 mb-2">San Francisco, CA (On-site)</p>
+                    <p class="text-gray-400 mb-2">$160,000 - $220,000</p>
+                    <p class="opacity-70">Develop cutting-edge computer vision systems for real-time film effects and scene generation.</p>
+                </div>
+                <button class="btn-apply px-6 py-2 rounded-full text-white">Apply Now</button>
+            </div>
+
+            <!-- AI Content Strategist -->
+            <div class="job-card p-6 rounded-lg flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+                <div>
+                    <h3 class="text-xl font-bold mb-2">AI Content Strategist</h3>
+                    <p class="text-gray-400 mb-2">New York, NY (Remote)</p>
+                    <p class="text-gray-400 mb-2">$120,000 - $160,000</p>
+                    <p class="opacity-70">Define and execute AI-driven content strategies for film production and distribution.</p>
+                </div>
+                <button class="btn-apply px-6 py-2 rounded-full text-white">Apply Now</button>
+            </div>
+
+            <!-- Senior Prompt Engineer -->
+            <div class="job-card p-6 rounded-lg flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+                <div>
+                    <h3 class="text-xl font-bold mb-2">Senior Prompt Engineer</h3>
+                    <p class="text-gray-400 mb-2">Austin, TX (Hybrid)</p>
+                    <p class="text-gray-400 mb-2">$140,000 - $190,000</p>
+                    <p class="opacity-70">Craft and optimize prompts for AI-generated scenes, characters, and storylines.</p>
+                </div>
+                <button class="btn-apply px-6 py-2 rounded-full text-white">Apply Now</button>
+            </div>
+
+            <!-- AI VFX Supervisor -->
+            <div class="job-card p-6 rounded-lg flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+                <div>
+                    <h3 class="text-xl font-bold mb-2">AI VFX Supervisor</h3>
+                    <p class="text-gray-400 mb-2">Los Angeles, CA (On-site)</p>
+                    <p class="text-gray-400 mb-2">$170,000 - $230,000</p>
+                    <p class="opacity-70">Oversee AI-powered visual effects creation and integration in film production.</p>
+                </div>
+                <button class="btn-apply px-6 py-2 rounded-full text-white">Apply Now</button>
+            </div>
+
+            <!-- AI Research Scientist -->
+            <div class="job-card p-6 rounded-lg flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+                <div>
+                    <h3 class="text-xl font-bold mb-2">AI Research Scientist</h3>
+                    <p class="text-gray-400 mb-2">Remote (US)</p>
+                    <p class="text-gray-400 mb-2">$180,000 - $240,000</p>
+                    <p class="opacity-70">Research and develop next-generation AI models for film production and storytelling.</p>
+                </div>
+                <button class="btn-apply px-6 py-2 rounded-full text-white">Apply Now</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="text-white px-6 py-12">
+        <div class="max-w-6xl mx-auto">
+            <div class="w-full h-px bg-white/10 mb-8"></div>
+            <div class="flex flex-col md:flex-row justify-between items-center gap-6">
+                <div class="text-sm font-medium">
+                    CACTUS FILMS, INC.
+                </div>
+                <div class="flex items-center gap-8 text-sm font-medium">
+                    <a href="#" class="hover:opacity-80">CONTACT</a>
+                    <a href="#" class="hover:opacity-80">PRIVACY</a>
+                    <a href="#" class="hover:opacity-80">TERMS</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
