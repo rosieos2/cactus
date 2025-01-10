@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cactus Films</title>
+    <link rel="icon" type="image/png" href="https://cdn.prod.website-files.com/674396c59212c6ea348b24e0/6781777e8090217672660a47_cactus%20films%20logo%20(1).png">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.cdnfonts.com/css/cabinet-grotesk');
+
+body {
+    font-family: 'Cabinet Grotesk', sans-serif;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    z-index: 1000;
+}
+
+/* Enhanced Button Styles */
+.btn-primary {
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    padding: 0.75rem 2rem;
+    border-radius: 9999px;
+    font-weight: 500;
+    letter-spacing: 0.025em;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(8px);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-primary:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.3);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.btn-primary:active {
+    transform: translateY(0);
+}
+
+.btn-primary::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
+    transform: scale(0);
+    opacity: 0;
+    transition: transform 0.6s ease, opacity 0.6s ease;
+}
+
+.btn-primary:hover::after {
+    transform: scale(1);
+    opacity: 1;
+}
+
+.btn-white {
+    background: white;
+    color: black;
+    padding: 0.75rem 2rem;
+    border-radius: 9999px;
+    font-weight: 600;
+    letter-spacing: 0.025em;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.btn-white:hover {
+    background: rgba(255, 255, 255, 0.9);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+.btn-white:active {
+    transform: translateY(0);
+}
+
+.modal.show {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.success-message {
+    display: none;
+}
+
+.success-message.show {
+    display: block;
+}
+
+.terminal-input-group {
+    display: flex;
+    align-items: center;
+    background: rgba(0, 255, 0, 0.05);
+    padding: 0.5rem;
+    border-radius: 4px;
+    margin-bottom: 0.5rem;
+}
+
+.terminal-text {
+    white-space: pre-line;
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+}
+
+.cursor::after {
+    content: '_';
+    animation: blink 1s infinite;
+}
+
+.loading-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.loading-wrapper {
+    text-align: center;
+    z-index: 9999;
+    width: 100%;
+    max-width: 600px;
+    padding: 0 20px;
+    position: relative;
+}
+
+.loading-logo {
+    width: 200px;
+    height: auto;
+    margin: 0 auto;
+    animation: glowPulse 2s infinite;
+    display: block;
+    transition: opacity 0.5s ease;
+}
+
+.curtain-left,
+.curtain-right {
+    position: fixed;
+    top: 0;
+    width: 50%;
+    height: 100%;
+    background: black;
+    transition: transform 1.5s cubic-bezier(0.77, 0, 0.175, 1);
+    z-index: 9998;
+}
+
+.curtain-left {
+    left: 0;
+    transform-origin: left;
+}
+
+.curtain-right {
+    right: 0;
+    transform-origin: right;
+}
+
+.loading-screen.hide .curtain-left {
+    transform: translateX(-100%);
+}
+
+.loading-screen.hide .curtain-right {
+    transform: translateX(100%);
+}
+
+.loading-screen.hide .loading-wrapper {
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+/* Loading Wrapper and Typewriter Styles */
+.typewriter-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 1.5rem;
+    height: 24px;
+}
+
+.typewriter-text {
+    font-family: 'Cabinet Grotesk', sans-serif;
+    font-size: 1.25rem;
+    color: white;
+    overflow: hidden;
+    white-space: nowrap;
+    opacity: 0;
+    width: 0;
+}
+
+.typewriter-text.start {
+    animation: typing 1.5s steps(40, end) forwards;
+    opacity: 1;
+}
+
+@keyframes glowPulse {
+    0% {
+        filter: drop-shadow(0 0 0px #00ff00);
+    }
+    50% {
+        filter: drop-shadow(0 0 30px #00ff00);
+    }
+    100% {
+        filter: drop-shadow(0 0 0px #00ff00);
+    }
+}
+
+@keyframes typing {
+    from { width: 0 }
+    to { width: 100% }
+}
+
+.main-content {
+    opacity: 0;
+    transition: opacity 1s ease;
+    position: relative;
+    z-index: 1;
+}
+
+.main-content.show {
+    opacity: 1;
+}
+    </style>
+</head>
+<body class="bg-black">
+    <!-- Loading Screen -->
+    <div class="loading-screen">
+        <div class="curtain-left"></div>
+        <div class="curtain-right"></div>
+        <div class="loading-wrapper">
+            <img src="https://cdn.prod.website-files.com/674396c59212c6ea348b24e0/6781777e8090217672660a47_cactus%20films%20logo%20(1).png" 
+                 alt="Cactus Films" 
+                 class="loading-logo">
+            <div class="typewriter-container">
+                <div class="typewriter-text">Welcome to the future of film</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="main-content">
+    <!-- Hero Section with Video -->
+    <section class="relative h-screen w-full overflow-hidden">
+        <!-- Video Background -->
+        <div class="absolute inset-0 overflow-hidden" style="z-index: 1;">
+            <iframe 
+                src="https://player.vimeo.com/video/1045799270?background=1&autoplay=1&loop=1&byline=0&title=0&muted=1&controls=0" 
+                style="position: absolute; top: 50%; left: 50%; width: 100vw; height: 100vh; transform: translate(-50%, -65%); pointer-events: none;"
+                frameborder="0" 
+                allow="autoplay; fullscreen" 
+                allowfullscreen>
+            </iframe>
+        </div>
+        
+        <!-- Overlay -->
+        <div class="absolute inset-0 bg-black bg-opacity-40" style="z-index: 2;"></div>
+
+        <!-- Content -->
+        <div class="relative h-full" style="z-index: 3;">
+            <!-- Logo -->
+            <header class="p-4">
+                <img src="https://cdn.prod.website-files.com/674396c59212c6ea348b24e0/67817175a2308347eb144625_cactus%20films%20logo.png" alt="CACTUSFILMS" class="h-16">
+            </header>
+
+            <!-- Hero Content -->
+            <div class="flex items-start justify-center h-full text-center px-4 pt-16">
+                <div>
+                    <h1 class="text-white text-4xl md:text-6xl mb-8 font-bold">
+                        Coming soon to a theatre<br>
+                        in the town near you.
+                    </h1>
+                    
+                    <!-- Buttons -->
+                    <div class="flex flex-wrap justify-center gap-6">
+                        <a href="https://x.com" target="_blank" class="btn-primary">
+                            X.COM
+                        </a>
+                        <a href="https://pump.fun" target="_blank" class="btn-primary">
+                            BUY $CACTUS
+                        </a>
+                        <button class="btn-primary">
+                            JOIN WAITLIST
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Partners Section -->
+    <section class="px-6 text-white relative -mt-48" style="z-index: 10;">
+        <div class="w-full h-px bg-white mb-8"></div>
+        <div class="flex justify-between items-center mb-12">
+            <h2 class="text-4xl font-bold">Partners</h2>
+            <div class="flex items-center gap-12">
+                <img src="https://cdn.prod.website-files.com/674396c59212c6ea348b24e0/678174509d3cf15d562cd0ab_universal.png" alt="Universal" class="h-24 object-contain">
+                <img src="https://cdn.prod.website-files.com/674396c59212c6ea348b24e0/6781744ad9bfb1aad0c96943_radical.png" alt="Radical" class="h-24 object-contain">
+                <img src="https://cdn.prod.website-files.com/674396c59212c6ea348b24e0/6781739bc574904f0c7ee4a4_sony.png" alt="Sony" class="h-24 object-contain">
+                <img src="https://cdn.prod.website-files.com/674396c59212c6ea348b24e0/6781739ac76ba4674898a887_paramount.png" alt="Paramount" class="h-24 object-contain">
+                <img src="https://cdn.prod.website-files.com/674396c59212c6ea348b24e0/6781739a3151e8c182187ec1_okx.png" alt="OKX" class="h-24 object-contain">
+            </div>
+        </div>
+        <div class="w-full h-px bg-white"></div>
+    </section>
+
+    <!-- Stay Connected Section -->
+    <section class="text-white px-6 py-12">
+        <div class="text-center">
+            <h2 class="text-7xl font-bold mb-12">STAY CONNECTED</h2>
+            <div class="max-w-3xl mx-auto mb-12">
+                <p class="text-lg leading-relaxed opacity-90 text-center">
+                    Cactus Films, launched by OKX, is a visionary movie production company dedicated to creating top-tier films that captivate global audiences. With a passion for storytelling and a commitment to excellence, Cactus Films delivers cinematic experiences that set new standards in the industry. Their expertise and innovation make them a trusted partner for high-end creative projects.
+                </p>
+            </div>
+            <button class="btn-white">
+                JOIN OUR TEAM
+            </button>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="text-white px-6 pb-6">
+        <div class="w-full h-px bg-white mb-8"></div>
+        <div class="flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="text-sm font-medium">
+                CACTUS FILMS, INC.
+            </div>
+            <div class="flex items-center gap-8 text-sm font-medium">
+                <a href="#" class="hover:opacity-80" onclick="openModal(event)">CONTACT</a>
+                <a href="#" class="hover:opacity-80">PRIVACY</a>
+                <a href="#" class="hover:opacity-80">TERMS</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Contact Modal -->
+    <div id="contactModal" class="modal">
+        <div class="bg-black p-8 rounded-lg max-w-md w-full mx-4 border border-white/20">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-white text-2xl font-bold">Contact Us</h3>
+                <button onclick="closeModal()" class="text-white hover:opacity-70">&times;</button>
+            </div>
+            
+            <!-- Contact Form -->
+            <form id="contactForm" class="space-y-4">
+                <div>
+                    <label class="block text-white mb-2">Name</label>
+                    <input type="text" class="w-full px-4 py-2 rounded-lg bg-black border border-white/20 text-white" required>
+                </div>
+                <div>
+                    <label class="block text-white mb-2">Email</label>
+                    <input type="email" class="w-full px-4 py-2 rounded-lg bg-black border border-white/20 text-white" required>
+                </div>
+                <div>
+                    <label class="block text-white mb-2">Message</label>
+                    <textarea class="w-full px-4 py-2 rounded-lg bg-black border border-white/20 text-white h-32" required></textarea>
+                </div>
+                <button type="submit" class="w-full bg-white text-black py-2 rounded-full font-bold hover:bg-opacity-90 transition-colors">
+                    Send Message
+                </button>
+            </form>
+
+            <!-- Success Message -->
+            <div id="successMessage" class="success-message text-center py-8">
+                <h4 class="text-white text-xl font-bold mb-4">Message Sent!</h4>
+                <p class="text-white/70 mb-6">Thank you for reaching out. We'll get back to you soon.</p>
+                <button onclick="closeModal()" class="bg-white text-black px-6 py-2 rounded-full font-bold hover:bg-opacity-90 transition-colors">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+
+    </div>
+
+    <script>
+        // Loading Animation Sequence
+        document.addEventListener('DOMContentLoaded', function() {
+    const loadingScreen = document.querySelector('.loading-screen');
+    const typewriterText = document.querySelector('.typewriter-text');
+    const mainContent = document.querySelector('.main-content');
+    
+    // Start typewriter animation
+    setTimeout(() => {
+        typewriterText.classList.add('start');
+        
+        // Wait for typewriter to complete, then start curtain animation
+        setTimeout(() => {
+            loadingScreen.classList.add('hide');
+            
+            // Wait for curtains to fully open before showing main content
+            setTimeout(() => {
+                mainContent.classList.add('show');
+                
+                // Only remove the loading screen after all transitions are complete
+                setTimeout(() => {
+                    loadingScreen.style.display = 'none';
+                }, 1000);
+            }, 1500); // Match this with the curtain transition duration
+        }, 2000); // Wait for typewriter to complete
+    }, 500);
+});
+
+        // Contact Modal Functions
+        function openModal(e) {
+            e.preventDefault();
+            document.getElementById('contactModal').classList.add('show');
+            document.getElementById('contactForm').style.display = 'block';
+            document.getElementById('successMessage').classList.remove('show');
+        }
+
+        function closeModal() {
+            document.getElementById('contactModal').classList.remove('show');
+            setTimeout(() => {
+                document.getElementById('contactForm').style.display = 'block';
+                document.getElementById('successMessage').classList.remove('show');
+            }, 300);
+        }
+
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            this.style.display = 'none';
+            document.getElementById('successMessage').classList.add('show');
+            // Reset form
+            this.reset();
+        });
+
+        // Close modal when clicking outside
+        document.getElementById('contactModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+
+        // Waitlist Modal Functions
+function openWaitlistModal(e) {
+    if(e) e.preventDefault();
+    document.getElementById('waitlistModal').classList.add('show');
+    document.getElementById('waitlistForm').style.display = 'block';
+    document.getElementById('waitlistSuccess').classList.remove('show');
+}
+
+function closeWaitlistModal() {
+    document.getElementById('waitlistModal').classList.remove('show');
+    setTimeout(() => {
+        document.getElementById('waitlistForm').style.display = 'block';
+        document.getElementById('waitlistSuccess').classList.remove('show');
+    }, 300);
+}
+
+// Update your waitlist button onclick
+document.querySelector('.btn-primary:last-child').onclick = openWaitlistModal;
+
+document.getElementById('waitlistForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const email = this.querySelector('input[type="email"]').value;
+    const name = this.querySelector('input[type="text"]').value;
+    
+    this.style.display = 'none';
+    const successDiv = document.getElementById('waitlistSuccess');
+    successDiv.classList.add('show');
+    
+    // Terminal-style success message
+    successDiv.querySelector('.terminal-text').innerHTML = 
+        `> Request processed successfully\n` +
+        `> Name: ${name}\n` +
+        `> Email: ${email}\n` +
+        `> Status: Added to waitlist\n` +
+        `> ETA: Q2 2024\n` +
+        `> Thank you for your interest in Cactus Films Software!`;
+        
+    // Reset form
+    this.reset();
+});
+
+// Close modal when clicking outside
+document.getElementById('waitlistModal').addEventListener('click', function(e) {
+    if (e.target === this) {
+        closeWaitlistModal();
+    }
+});
+    </script>
+    <div id="waitlistModal" class="modal">
+        <div class="bg-black p-8 rounded-lg max-w-md w-full mx-4 border border-green-500/20">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-green-500 text-xl font-mono">Join Waitlist</h3>
+                <button onclick="closeWaitlistModal()" class="text-green-500 hover:text-green-400">&times;</button>
+            </div>
+            
+            <!-- Terminal Style Form -->
+            <div id="terminalOutput" class="font-mono text-green-500 mb-4 h-32 overflow-y-auto">
+                > Welcome to Cactus Films Software Waitlist
+                > Please enter your details below...
+            </div>
+            
+            <form id="waitlistForm" class="space-y-4">
+                <div class="terminal-input-group">
+                    <span class="text-green-500 font-mono">></span>
+                    <input type="email" 
+                           placeholder="Enter your email" 
+                           class="bg-black border-none outline-none text-green-500 font-mono ml-2 w-[90%] focus:ring-0"
+                           required>
+                </div>
+                <div class="terminal-input-group">
+                    <span class="text-green-500 font-mono">></span>
+                    <input type="text" 
+                           placeholder="Your name" 
+                           class="bg-black border-none outline-none text-green-500 font-mono ml-2 w-[90%] focus:ring-0"
+                           required>
+                </div>
+                <div class="terminal-input-group">
+                    <span class="text-green-500 font-mono">></span>
+                    <input type="text" 
+                           placeholder="Company (optional)" 
+                           class="bg-black border-none outline-none text-green-500 font-mono ml-2 w-[90%] focus:ring-0">
+                </div>
+                <button type="submit" class="w-full bg-green-500/20 text-green-500 py-2 rounded font-mono border border-green-500/20 hover:bg-green-500/30 transition-colors">
+                    SUBMIT REQUEST
+                </button>
+            </form>
+    
+            <!-- Success Message -->
+            <div id="waitlistSuccess" class="success-message text-center py-8">
+                <h4 class="text-green-500 text-xl font-mono mb-4">Request Received!</h4>
+                <div class="text-green-500/70 font-mono mb-6 text-left terminal-text"></div>
+                <button onclick="closeWaitlistModal()" class="bg-green-500/20 text-green-500 px-6 py-2 rounded font-mono border border-green-500/20 hover:bg-green-500/30 transition-colors">
+                    Close Terminal
+                </button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
